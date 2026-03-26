@@ -1,0 +1,319 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J&J Petro Station | Premium Fuel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --primary: #c69c6d;
+            --dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 45vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--dark)), url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?auto=format&fit=crop&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+            .hero h1 {
+                font-size: 2.8rem;
+                margin: 0;
+            }
+
+            .hero p {
+                color: var(--primary);
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                margin: 0;
+                font-size: 0.9rem;
+            }
+
+        .section-title {
+            text-align: center;
+            margin: 30px 0 15px;
+            font-weight: 400;
+            color: #888;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* SERVICES GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+            .grid a {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+            }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px 15px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .card i {
+                color: var(--primary);
+                margin-bottom: 8px;
+                width: 28px;
+                height: 28px;
+            }
+
+            /* HOVER & CLICK EFFECTS (SERVICES) */
+            .card:hover {
+                background: rgba(198, 156, 106, 0.1);
+                border-color: var(--primary);
+                transform: translateY(-5px);
+                box-shadow: 0 0 20px rgba(198, 156, 109, 0.4);
+            }
+
+            .card:active {
+                transform: scale(0.95);
+                background: var(--primary);
+                color: black;
+            }
+
+                .card:active i {
+                    color: black;
+                }
+
+        /* PROMO CARD (COFFEE) */
+        .promo-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+            .promo-card:hover {
+                border-color: var(--primary);
+                transform: translateY(-5px);
+                box-shadow: 0 0 20px rgba(198, 156, 109, 0.5);
+            }
+
+            .promo-card:active {
+                transform: scale(0.98);
+                background: var(--primary);
+            }
+
+                .promo-card:active h3, .promo-card:active p {
+                    color: black !important;
+                }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* STEAM ANIMATION */
+        .coffee-icon-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 2.5rem;
+        }
+
+        .steam {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 3px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+            .steam span {
+                animation: steamRise 2s infinite ease-out;
+                opacity: 0;
+            }
+
+                .steam span:nth-child(1) {
+                    animation-delay: 0s;
+                }
+
+                .steam span:nth-child(2) {
+                    animation-delay: 0.4s;
+                }
+
+                .steam span:nth-child(3) {
+                    animation-delay: 0.8s;
+                }
+
+        @keyframes steamRise {
+            0% {
+                transform: translateY(5px) scale(1);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-25px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* BOTTOM NAV */
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(15,15,15,0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+            .nav a {
+                color: #666;
+                text-decoration: none;
+                text-align: center;
+                font-size: 0.7rem;
+                padding: 8px 15px;
+                border-radius: 20px;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+                .nav a:hover {
+                    color: var(--primary);
+                    box-shadow: 0 0 15px rgba(198, 156, 109, 0.3);
+                    background: rgba(255,255,255,0.03);
+                }
+
+                .nav a:active {
+                    transform: scale(0.9);
+                    background: var(--primary);
+                    color: black !important;
+                }
+
+                .nav a.active {
+                    color: var(--primary);
+                }
+
+            .nav i {
+                margin-bottom: 4px;
+                width: 20px;
+                height: 20px;
+            }
+
+        /* LOADER */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><h2 style="color:var(--primary)">J&J</h2></div>
+
+    <header class="hero">
+        <h1>J&J Petro</h1>
+        <p>Premium Fuel & Service</p>
+    </header>
+
+    <h3 class="section-title">OUR SERVICES</h3>
+
+    <div class="grid">
+        <a href="fuel.html">
+            <div class="card"><i data-feather="droplet"></i><div>Fuel</div></div>
+        </a>
+        <a href="wash.html">
+            <div class="card"><i data-feather="shield"></i><div>Wash</div></div>
+        </a>
+        <a href="tires.html">
+            <div class="card"><i data-feather="wind"></i><div>Tires</div></div>
+        </a>
+        <a href="ev.html">
+            <div class="card"><i data-feather="zap"></i><div>EV</div></div>
+        </a>
+
+        <a href="J&JCoffeeShop.html" class="promo-card">
+            <div>
+                <h3 style="margin:0">J&J Coffee</h3>
+                <p style="font-size:0.7rem; color:#888; margin-bottom: 8px;">Freshly brewed for you</p>
+                <span class="btn">View Menu</span>
+            </div>
+            <div class="coffee-icon-container">
+                <div class="steam"><span>~</span><span>~</span><span>~</span></div>
+                <span>☕</span>
+            </div>
+        </a>
+    </div>
+
+    <nav class="nav">
+        <a href="J&JPetroStation.html" class="active"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://www.google.com/maps" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="https://wa.me/96103358831"><i data-feather="message-circle"></i>Chat</a>
+    </nav>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 500);
+        });
+        feather.replace();
+    </script>
+</body>
+</html>

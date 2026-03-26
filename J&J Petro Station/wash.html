@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washing Services | J&J Petro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* BOTTOM NAV STYLES */
+        .nav a {
+            color: #666;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 20px; /* Rounded shape for the glow */
+            transition: all 0.3s ease; /* Smooth glow and scale */
+        }
+
+            /* 1. GLOW ON HOVER */
+            .nav a:hover {
+                color: var(--primary);
+                background: rgba(198, 156, 109, 0.1); /* Subtle background tint */
+                /* Gold neon glow */
+                box-shadow: 0 0 15px rgba(198, 156, 109, 0.5);
+                transform: translateY(-3px); /* Lifts it up slightly */
+            }
+
+            /* 2. CLICK EFFECT (TAP) */
+            .nav a:active {
+                transform: scale(0.9); /* Shrinks when pressed */
+                background: var(--primary);
+                color: black !important;
+                box-shadow: 0 0 5px var(--primary);
+            }
+
+            /* Ensure the active page icon is always visible */
+            .nav a.active {
+                color: var(--primary);
+                font-weight: 600;
+            }
+
+            /* Make sure icons inside the nav also glow */
+            .nav a:hover i {
+                filter: drop-shadow(0 0 3px var(--primary));
+            }
+        :root {
+            --primary: #c69c6d;
+            --dark: #0a0a0a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            padding-bottom: 100px;
+        }
+
+        /* SLIDER STYLES */
+        .slider-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+            .slide.active {
+                opacity: 1;
+            }
+
+        .content {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+            .content h1 {
+                color: var(--primary);
+                margin-bottom: 10px;
+            }
+
+            .content p {
+                color: #aaa;
+                line-height: 1.6;
+            }
+
+        /* BACK BUTTON */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            z-index: 10;
+            display: flex;
+        }
+
+        /* SHARED NAV */
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(20,20,20,0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+            .nav a {
+                color: #555;
+                text-decoration: none;
+                font-size: 0.7rem;
+                text-align: center;
+            }
+
+            .nav i {
+                display: block;
+                margin: 0 auto 4px;
+            }
+    </style>
+</head>
+<body>
+
+    <a href="J&JPetroStation.html" class="back-btn"><i data-feather="arrow-left"></i></a>
+
+    <div class="slider-container">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1563906267088-b029e7101114?q=80&w=1000')"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1527335441081-420689625394?q=80&w=1000')"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1610444583737-9f13c69bc0f1?q=80&w=1000')"></div>
+    </div>
+
+    <div class="content">
+        <h1>Premium Fueling</h1>
+        <p>At J&J Petro, we provide only the highest quality octane for your vehicle. Our pumps are maintained daily to ensure accuracy and speed, so you can get back on the road safely.</p>
+    </div>
+
+    <nav class="nav">
+        <a href="J&JPetroStation.html"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://www.google.com/maps" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="https://wa.me/96103358831"><i data-feather="message-circle"></i>Chat</a>
+    </nav>
+
+    <script>
+        feather.replace();
+
+        // SLIDER LOGIC
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Change image every 3 seconds (3000ms)
+        setInterval(nextSlide, 3000);
+    </script>
+</body>
+</html>

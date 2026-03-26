@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J&J Coffee Shop | Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --primary: #c69c6d;
+            --dark-bg: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            padding-bottom: 120px;
+        }
+
+        .header {
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, #111, var(--dark-bg));
+        }
+
+            .header p {
+                color: var(--primary);
+                margin: 0;
+                font-weight: 300;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-size: 0.8rem;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+                margin: 5px 0 0;
+            }
+
+        /* MENU GRID */
+        .menu-grid {
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .coffee-card {
+            background: #151515;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+            .coffee-card:hover {
+                border-color: var(--primary);
+                box-shadow: 0 0 15px rgba(198, 156, 109, 0.3);
+                transform: translateY(-5px);
+            }
+
+            .coffee-card img {
+                width: 100%;
+                height: 140px;
+                object-fit: cover;
+            }
+
+        .coffee-info {
+            padding: 12px;
+        }
+
+            .coffee-info h3 {
+                margin: 0;
+                font-size: 0.9rem;
+                font-weight: 400;
+            }
+
+            .coffee-info .price {
+                color: var(--primary);
+                font-weight: 600;
+                margin-top: 5px;
+                font-size: 1.1rem;
+            }
+
+        /* NAVIGATION BAR (Matches Index) */
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(15,15,15,0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+            .nav a {
+                color: #666;
+                text-decoration: none;
+                text-align: center;
+                font-size: 0.7rem;
+                padding: 8px 15px;
+                border-radius: 20px;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+                /* GLOW ON HOVER */
+                .nav a:hover {
+                    color: var(--primary);
+                    box-shadow: 0 0 15px rgba(198, 156, 109, 0.4);
+                    background: rgba(255,255,255,0.03);
+                }
+
+                /* CLICK EFFECT */
+                .nav a:active {
+                    transform: scale(0.9);
+                    background: var(--primary);
+                    color: black !important;
+                }
+
+                .nav a.active {
+                    color: var(--primary);
+                }
+
+            .nav i {
+                margin-bottom: 4px;
+                width: 20px;
+                height: 20px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <p>Fuel Your Day</p>
+        <h1>J&J Coffee Shop</h1>
+    </div>
+
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80">
+            <div class="coffee-info">
+                <h3>Signature Latte</h3>
+                <div class="price">$3.50</div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80">
+            <div class="coffee-info">
+                <h3>Iced Americano</h3>
+                <div class="price">$3.00</div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80">
+            <div class="coffee-info">
+                <h3>Cappuccino</h3>
+                <div class="price">$3.25</div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?auto=format&fit=crop&q=80">
+            <div class="coffee-info">
+                <h3>Double Espresso</h3>
+                <div class="price">$2.50</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a href="J&JPetroStation.html"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html" class="active"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://maps.google.com/?q=J%26J+Petro" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="https://wa.me/96103358831"><i data-feather="message-circle"></i>Chat</a>
+    </nav>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
