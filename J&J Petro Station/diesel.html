@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diesel Order | J&J Petro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --primary: #c69c6d;
+            --dark: #0a0a0a;
+            --card-bg: #151515;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            padding-bottom: 200px;
+        }
+
+        /* HEADER & SLIDER SECTION */
+        .header-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to bottom, transparent, var(--dark)), 
+                        url('https://images.unsplash.com/photo-1563906267088-b029e7101114?q=80&w=1000');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .back-btn {
+            position: absolute; 
+            top: 20px; 
+            left: 20px;
+            background: rgba(0,0,0,0.6); 
+            color: white;
+            padding: 10px; 
+            border-radius: 50%; 
+            z-index: 10; 
+            display: flex;
+        }
+
+        .container { 
+            padding: 20px; 
+        }
+
+        .service-title { 
+            margin-top: -50px; 
+            position: relative; 
+        }
+        .service-title h1 { 
+            font-size: 2rem; 
+            margin: 0; 
+        }
+        .service-title p { 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 0.8rem; 
+            margin: 5px 0; 
+        }
+
+        /* DIESEL ITEM DESIGN */
+        .diesel-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .price-tag span { 
+            font-size: 1rem; 
+            color: #666; 
+        }
+
+        /* QUANTITY SELECTOR */
+        .qty-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin: 20px 0;
+        }
+
+        .qty-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            width: 50px; height: 50px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .qty-btn:active { 
+            transform: scale(0.9); 
+            background: var(--primary); 
+            color: black; 
+        }
+
+        #qtyDisplay { 
+            font-size: 2rem; 
+            font-weight: 600; 
+            min-width: 60px; 
+            text-align: center; 
+        }
+
+        /* ORDER DETAILS FORM */
+        .input-group {
+            margin-top: 25px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .input-group label {
+             display: block; 
+             font-size: 0.75rem; 
+             color: #888; 
+             margin-bottom: 5px; 
+        }
+
+        .input-group input {
+            width: 100%; 
+            background: transparent; 
+            border: none;
+            color: white; 
+            font-family: inherit; 
+            font-size: 1rem; 
+            outline: none;
+        }
+
+        /* THE BAR */
+        .order-action-bar {
+            position: fixed; 
+            bottom: 100px; 
+            left: 15px; 
+            right: 15px;
+            background: var(--primary); 
+            padding: 12px 15px;
+            border-radius: 18px; 
+            display: flex; 
+            justify-content: space-between; /* Pushes Qty to left, Buttons to right */
+            align-items: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1001; 
+            transform: translateY(250px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            visibility: hidden;
+        }
+
+        /* THE BUTTON GROUP CONTAINER */
+        .action-btns {
+            display: flex;
+            gap: 10px; /* Space between Clear and Order buttons */
+        }
+
+        .confirm-btn {
+            background: black; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            cursor: pointer; 
+        }
+
+        .clear-btn {
+            background: #8b0000; /* Dark Red */
+            color: white; 
+            border: none;
+            padding: 10px 15px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            cursor: pointer;
+        }
+
+        .order-action-bar > div:last-child {
+            display: flex;
+            gap: 8px;
+        }
+
+        .order-action-bar.visible { 
+            transform: translateY(0); 
+            visibility: visible;  
+        }
+        /* Removes the default arrows from the number input for a cleaner look */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* NAV STYLE */
+        .nav {
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            right: 20px;
+            background: rgba(20,20,20,0.9); 
+            backdrop-filter: blur(10px);
+            display: flex; 
+            justify-content: space-around; 
+            padding: 15px 0;
+            border-radius: 30px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            z-index: 1000;
+        }
+        .nav a { 
+            color: #555; 
+            text-decoration: none; 
+            font-size: 0.7rem; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        .nav a.active { 
+            color: var(--primary); 
+        }
+    </style>
+</head>
+<body>
+
+    <a href="J&JPetroStation.html" class="back-btn"><i data-feather="arrow-left"></i></a>
+
+    <div class="header-image"></div>
+
+    <div class="container">
+        <div class="service-title">
+            <p>Refuel Anywhere</p>
+            <h1>Diesel Distribution</h1>
+        </div>
+
+        <div class="diesel-item">
+            <div class="price-tag" id="totalPrice">$0.00 <span>Total</span></div>
+            <p style="text-align: center; color: #888; margin: 0;">Set Quantity (Liter)</p>
+        <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty(-1)">-</button>
+    
+            <input type="number" id="qtyInput" value="0" min="0" oninput="manualInput()" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); 
+                  color: white; font-size: 2rem; font-weight: 600; width: 120px; text-align: center; border-radius: 10px; outline: none;">
+                  
+            <button class="qty-btn" onclick="updateQty(1)">+</button>
+        </div>
+
+            <div class="input-group">
+                <label>Delivery Address / Location</label>
+                <input type="text" id="deliveryLoc" placeholder="e.g. 123 Street Name">
+            </div>
+        </div>
+    </div>
+
+    <div id="orderBar" class="order-action-bar">
+        <div>
+            <span id="finalQty">0 L</span>
+        </div>
+        <div>
+            <button class="confirm-btn" onclick="sendDieselOrder()">Order Now</button>
+            <button class="clear-btn"   onclick="clearCart()">Clear Order</button>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a href="J&JPetroStation.html"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://maps.app.goo.gl/KT3dtvv9DXUvMYA17" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="https://wa.me/96103358831"><i data-feather="message-circle"></i>Chat</a>
+    </nav>
+
+    <script>
+        feather.replace();
+
+        let quantity = 0;
+        const pricePerUnit = 1.223; // Change your diesel price here
+
+        // Handles the + and - buttons
+        function updateQty(amt) {
+            quantity = Math.max(0, quantity + amt);
+            document.getElementById('qtyInput').value = quantity; // Update the input box
+            calculateTotal();
+        }
+
+        // Handles the typing
+        function manualInput() {
+            let val = document.getElementById('qtyInput').value;
+            quantity = parseFloat(val) || 0; // Update our logic variable
+            if (quantity < 0) quantity = 0;
+            calculateTotal();
+        }
+        // Handles the sending 
+        function sendDieselOrder() {
+            const locInput = document.getElementById('deliveryLoc');
+            const loc = locInput.value.trim();
+            const phone = "96103358831";
+            const total = (quantity * pricePerUnit).toFixed(2);
+            
+            // Validation: Don't let them order without a location
+            if (loc === "") {
+                alert("Please enter a delivery location first!");
+                locInput.style.border = "1px solid #ff4444"; // Glow red
+                locInput.focus();
+                return;
+            }
+
+            // Reset border if it was red
+            locInput.style.border = "none";
+
+            const message = `⛽ *Diesel Delivery Order* \n\n` +
+                          `• *Quantity:* ${quantity} L\n` +
+                          `• *Total Price:* $${total}\n` +
+                          `• *Location:* ${loc}\n\n` +
+                          `_Sent from J&J Petro Website`;
+
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+        }
+        // Handles clearing the order
+        function clearCart() {
+            if (confirm("Are you sure you want to clear this order?")) {
+                // 1. Reset the number to zero
+                quantity = 0;
+
+                // 2. Update the input box value
+                document.getElementById('qtyInput').value = 0;
+
+                // 3. Clear the location field
+                document.getElementById('deliveryLoc').value = "";
+                document.getElementById('deliveryLoc').style.border = "none";
+
+                // 4. Refresh the UI (this hides the bar and resets the price)
+                calculateTotal();
+            }
+        }
+
+        // Handles the calculation Total
+        function calculateTotal() {
+            const total = (quantity * pricePerUnit).toFixed(2);
+            document.getElementById('totalPrice').innerHTML = `$${total} <span>Total</span>`;
+            document.getElementById('finalQty').innerText = quantity + " Liters";
+
+            const bar = document.getElementById('orderBar');
+            if (quantity > 0) {
+                bar.classList.add('visible');
+            } else {
+                bar.classList.remove('visible');
+            }
+        }
+    </script>
+</body>
+</html>
