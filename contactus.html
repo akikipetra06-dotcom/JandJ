@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - J&J</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --primary: #c69c6d;
+            --dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes floatInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loaded .contact-section { animation: floatInUp 0.8s ease-out forwards; }
+        .contact-section { opacity: 0; }
+
+        /* --- HERO --- */
+        .hero {
+            height: 30vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--dark)), 
+                        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- CONTACT CARDS --- */
+        .container { padding: 20px; }
+
+        .section-header {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin: 30px 0 15px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .contact-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .contact-card:hover {
+            background: rgba(198, 156, 106, 0.1);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .icon-box {
+            width: 45px;
+            height: 45px;
+            background: rgba(198, 156, 106, 0.2);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .contact-info h4 { margin: 0; font-size: 0.85rem; color: #888; font-weight: 400; }
+        .contact-info p { margin: 0; font-size: 1rem; font-weight: 600; }
+
+        /* --- BOTTOM NAV --- */
+        .nav {
+            position: fixed;
+            bottom: 20px; left: 20px; right: 20px;
+            background: rgba(15,15,15,0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .nav a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav a.active { color: var(--primary); }
+        .nav i { margin-bottom: 4px; width: 20px; height: 20px; }
+
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Get In Touch</h1>
+        <p style="color: var(--primary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">We are here to help</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="contact-section" style="animation-delay: 0.2s">
+            <div class="section-header"><i data-feather="zap" style="width:18px"></i> J&J Petro Station</div>
+            <div class="contact-grid">
+                <a href="https://www.instagram.com/jandjpetro_station?igsh=c205ZzQ5dnVrbGh4" target="_blank" class="contact-card">
+                    <div class="icon-box"><i data-feather="instagram"></i></div>
+                    <div class="contact-info">
+                        <h4>Instagram</h4>
+                        <p>@jandjpetro_station</p>
+                    </div>
+                </a>
+                <a href="https://www.facebook.com/share/1HusYyzy2G/" target="_blank" class="contact-card">
+                    <div class="icon-box"><i data-feather="facebook"></i></div>
+                    <div class="contact-info">
+                        <h4>Facebook</h4>
+                        <p>J&J Petro Station</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-section" style="animation-delay: 0.4s">
+            <div class="section-header"><i data-feather="coffee" style="width:18px"></i> J&J Coffee Shop</div>
+            <div class="contact-grid">
+                <a href="https://www.instagram.com/jandj_coffee_shop?igsh=cWR1cnI5ZGY1ems3" target="_blank" class="contact-card">
+                    <div class="icon-box"><i data-feather="instagram"></i></div>
+                    <div class="contact-info">
+                        <h4>Instagram</h4>
+                        <p>@jandj_coffee_shop</p>
+                    </div>
+                </a>
+                <a href="https://www.facebook.com/share/19tHPqtS4t/" target="_blank" class="contact-card">
+                    <div class="icon-box"><i data-feather="facebook"></i></div>
+                    <div class="contact-info">
+                        <h4>Facebook</h4>
+                        <p>J&J Coffee Shop</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="contact-section" style="animation-delay: 0.4s">
+            <div class="section-header"><i data-feather="message-circle"></i> Contacts</div>
+            <div class="contact-grid">
+                <a href="https://wa.me/96103358831" class="contact-card">
+                    <div class="icon-box"><img src="whatsapp.png" target="_blank" width="30" height="30"></div>
+                    <div class="contact-info">
+                        <h4>Jean AKIKI</h4>
+                        <p>+961 03 358 831</p>
+                    </div>
+                </a>
+                <a href="https://wa.me/96103077968" class="contact-card">
+                    <div class="icon-box"><img src="whatsapp.png" target="_blank" width="30" height="30"></div>
+                    <div class="contact-info">
+                        <h4>Jack AKIKI</h4>
+                        <p>+961 03 077 968</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    <div class="contact-section" style="animation-delay: 0.5s">
+            <div class="section-header"><i data-feather="map-pin" style="width:18px"></i> Our Location</div>
+            <div class="contact-grid">
+                <div class="icon-box"><i data-feather="map-pin"></i></div>
+                <div class="contact-info">
+                    <h3 style="margin: 0 0 10px 0;">J&J Petro Station</h3>
+                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 20px;">Visit us for the best coffee and fresh baguettes while you fuel up!</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=J%26J+Petro+Station" target="_blank" 
+                        style="display: inline-block; background: var(--primary); color: black; text-decoration: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;">
+                        Get Directions
+                    </a>
+                </div>
+            </div>
+    </div>
+    </div>
+    <nav class="nav">
+        <a href="J&JPetroStation.html" class="active"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=J%26J+Petro+Station" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="contactus.html"><i data-feather="message-circle"></i>Contact Us</a>
+    </nav>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+        feather.replace();
+    </script>
+</body>
+</html>

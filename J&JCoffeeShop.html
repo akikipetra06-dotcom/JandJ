@@ -1,0 +1,1569 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J&J Coffee Shop | Order Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --primary: #c69c6d;
+            --dark-bg: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            padding-bottom: 180px; 
+            scroll-behavior: smooth;
+        }
+
+        /* CATEGORY BANNER */
+        .category-banner {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 900;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        .category-banner::-webkit-scrollbar { display: none; }
+        
+        .category-item {
+            display: inline-block;
+            padding: 8px 18px;
+            margin: 0 5px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .category-item:hover { color: var(--primary); background: var(--glass); }
+
+        .header { padding: 40px 20px 20px; background: linear-gradient(to bottom, #111, var(--dark-bg)); }
+        .header p { color: var(--primary); margin: 0; font-weight: 300; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+        .header h1 { font-size: 2.2rem; margin: 5px 0 0; }
+
+        .section-title { padding: 30px 20px 15px; font-size: 1.2rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--glass); margin-bottom: 20px; }
+
+        /* BASE MOBILE STYLES (2 Columns) */
+.menu-grid { 
+    padding: 10px; 
+    display: grid; 
+    gap: 10px; /* Space between cards */
+    grid-template-columns: repeat(2, 1fr); /* Exactly 2 per row */
+    margin-bottom: 30px; 
+}
+
+.coffee-card { 
+    background: #151515; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    border: 1px solid rgba(255,255,255,0.05); 
+    display: flex; 
+    flex-direction: column;
+    width: 100%; /* Ensures they fill the grid cell */
+}
+
+/* TABLET STYLES (3 Columns) */
+@media (min-width: 600px) { 
+    .menu-grid { 
+        grid-template-columns: repeat(3, 1fr); 
+        padding: 20px 40px; 
+        gap: 20px;
+    } 
+}
+
+/* DESKTOP STYLES (4 Columns) */
+@media (min-width: 1024px) { 
+    .menu-grid { 
+        grid-template-columns: repeat(4, 1fr); 
+        padding: 20px 40px; 
+        gap: 20px;
+    } 
+}
+@media (min-width: 1200px) { 
+    .menu-grid { 
+        grid-template-columns: repeat(5, 1fr); 
+        max-width: 1600px; 
+        margin: 0 auto 30px; 
+        gap: 25px;
+    } 
+}
+
+        .coffee-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
+        .coffee-info h3 { margin: 0; font-size: 0.85rem; font-weight: 400; height: 38px; }
+        .coffee-info .price { font-size: 1rem; color: var(--primary); font-weight: 600; margin-bottom: 10px; }
+
+        .coffee-card img { 
+    width: 100%; 
+    height: 150px; /* Slightly taller for better visibility */
+    object-fit: cover; 
+}
+
+.btn-group { 
+    display: flex; 
+    gap: 6px; 
+    margin-top: auto; 
+    align-items: center;
+}
+
+
+.add-btn { 
+    background: var(--glass); /* Solid Gold background */
+    border: 1px solid var(--primary); 
+    color: var(--primary);
+    padding: 10px 5px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-weight: 700; 
+    font-size: 0.8rem; /* Slightly larger for readability */
+    flex: 3; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: 4px;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.minus-btn {
+    flex: 1;
+    background: var(--glass); /* Solid Gold background */
+    border: 1px solid var(--primary); 
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    cursor: pointer; 
+}
+
+/* Ensure icons inside buttons are sized correctly */
+.add-btn i, .minus-btn i {
+    width: 14px;
+    height: 14px;
+}
+        /* CART BAR */
+        .cart-bar {
+            position: fixed; bottom: 95px; left: 15px; right: 15px;
+            background: var(--primary); color: black; padding: 12px 15px;
+            border-radius: 15px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1001; transform: translateY(250px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            visibility: hidden;
+        }
+        .cart-bar.active { transform: translateY(0); visibility: visible; }
+        .cart-bar h4 { margin: 0; font-size: 0.8rem; }
+        .view-btn { background: black; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .clear-btn-main { background: #ff4444; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 8px; }
+
+        /* OVERLAY */
+        .order-overlay { position: fixed; bottom: 0; left: 0; right: 0; height: 75vh; background: #151515; border-top: 2px solid var(--primary); border-radius: 30px 30px 0 0; z-index: 2000; padding: 20px; transform: translateY(100%); transition: transform 0.4s ease; display: flex; flex-direction: column; }
+        .order-overlay.open { transform: translateY(0); }
+        .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .order-list { flex-grow: 1; overflow-y: auto; }
+        .order-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .qty-btn { background: var(--glass); border: 1px solid var(--primary); color: var(--primary); border-radius: 5px; width: 30px; height: 30px; cursor: pointer; }
+        .whatsapp-btn { width: 100%; background: #c69c6d; color: white; border: none; padding: 15px; border-radius: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+
+        /* POPUP */
+        #thankYouPopup {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 3000;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        #thankYouPopup.show { display: flex !important; }
+
+        .nav { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(15,15,15,0.9); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 12px 0; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
+        .nav a { color: #666; text-decoration: none; text-align: center; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; }
+        .nav a.active { color: var(--primary); }
+
+        @keyframes coffee-float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <p>Order Online</p>
+        <h1>J&J Coffee Shop</h1>
+    </div>
+
+    <div class="category-banner">
+        <a href="#baguettes" class="category-item">Baguettes</a>
+        <a href="#croissant" class="category-item">Croissant</a>
+        <a href="#hot-coffee" class="category-item">Hot Coffee</a>
+        <a href="#cold-coffee" class="category-item">Cold Coffee</a>
+        <a href="#tea" class="category-item">Tea</a>
+        <a href="#specialties" class="category-item">Specialties</a>
+        <a href="#smoothies" class="category-item">Smoothies & Milkshakes</a>
+        <a href="#coffee-beans" class="category-item">Coffee Beans</a>
+        <a href="#fresh" class="category-item">Fresh Items</a>
+    </div>
+
+    <div id="baguettes" class="section-title">Baguettes</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="baguetteClassique24.jpeg" alt="Baguette Classique 24cm">
+            <div class="coffee-info">
+                <h3>Baguette Classique 24cm</h3>
+                <div class="price">$0.94</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openBaguetteCustomizer('Baguette Classique 24cm', 0.94)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Classique 24cm', 0.94)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="baguetteCereale24.png" alt="Baguette Céréale 24cm">
+            <div class="coffee-info">
+                <h3>Baguette Céréale 24cm</h3>
+                <div class="price">$1.44</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openBaguetteCustomizer('Baguette Céréale 24cm', 1.44)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Céréale 24cm', 1.44)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="baguetteClassique57.png" alt="Baguette Classique 57cm">
+            <div class="coffee-info">
+                <h3>Baguette Classique 57cm</h3>
+                <div class="price">$1.83</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Baguette Classique 57cm', 1.83)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Classique 57cm', 1.83)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="baguetteCereale57.png" alt="Baguette Céréale 57cm">
+            <div class="coffee-info">
+                <h3>Baguette Céréale 57cm</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Baguette Céréale 57cm', 3.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Céréale 57cm', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="baguettePavot57.png" alt="Baguette Pavot 57cm">
+            <div class="coffee-info">
+                <h3>Baguette Pavot 57cm</h3>
+                <div class="price">$2.11</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Baguette Pavot 57cm', 2.11)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Pavot 57cm', 2.11)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="baguetteOlive57.png" alt="Baguette Olive 57cm">
+            <div class="coffee-info">
+                <h3>Baguette Olive 57cm</h3>
+                <div class="price">$2.28</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Baguette Olive 57cm', 2.28)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Baguette Olive 57cm', 2.28)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="brownSourdough57.png" alt="Brown Sourdough 57cm">
+            <div class="coffee-info">
+                <h3>Brown Sourdough</h3>
+                <div class="price">$7.49</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Brown Sourdough', 7.49)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Brown Sourdough', 7.49)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="whiteSourdough57.png" alt="White Sourdough 57cm">
+            <div class="coffee-info">
+                <h3>White Sourdough</h3>
+                <div class="price">$7.10</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('White Sourdough', 7.10)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('White Sourdough', 7.10)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="ciabattaCereale57.png" alt="Ciabatta Aux Céréale 57cm">
+            <div class="coffee-info">
+                <h3>Ciabatta Aux Céréale</h3>
+                <div class="price">$2.05</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Ciabatta Aux Céréale', 2.05)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Ciabatta Aux Céréale', 2.05)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="coffee-card">
+            <img src="sandViennois57.png" alt="Sand Viennois 57cm">
+            <div class="coffee-info">
+                <h3>Sand Viennois</h3>
+                <div class="price">$0.72</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Sand Viennois', 0.72)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Sand Viennois', 0.72)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="croissant" class="section-title">Croissant</div>
+    <div class="menu-grid">
+
+        <div class="coffee-card">
+            <img src="beurre.jpeg" style="object-position: 0% 20%;" alt="Croissant au Beurre">
+            <div class="coffee-info">
+                <h3>Croissant Au Beurre</h3>
+                <div class="price">$2.34</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Croissant Au Beurre', 2.34)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Croissant Au Beurre', 2.34)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="fromage.jpeg" alt="Croissant au Fromage">
+            <div class="coffee-info">
+                <h3>Croissant Au Fromage</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Croissant Au Fromage', 3.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Croissant Au Fromage', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="thym.jpeg" alt="Croissant au Thym">
+            <div class="coffee-info">
+                <h3>Croissant Au Thym</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Croissant Au Thym', 3.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Croissant Au Thym', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="amande.jpeg" style="object-position: 0% 20%;" alt="Croissant au Amande">
+            <div class="coffee-info">
+                <h3>Croissant Au Amande</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Croissant Au Amande', 3.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Croissant Au Amande', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="chocolat.jpeg" style="object-position: 20% 40%;" alt="Pain au Chocolat">
+            <div class="coffee-info">
+                <h3>Pain Au Chocolat</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain Au Chocolat', 3.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain Au Chocolat', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="raisin.jpeg" style="object-position: 20% 40%;" alt="Pain au Raisin">
+            <div class="coffee-info">
+                <h3>Pain Au Raisin</h3>
+                <div class="price">$3.27</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain Au Raisin', 3.27)"><i data-feather="plus"></i> Add</button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain Au Raisin', 3.27)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hot-coffee" class="section-title">Hot Coffee</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="Spanishlatte.png" style="object-position: 40% 36%;" alt="Spanish Latte">
+            <div class="coffee-info">
+                <h3>Spanish Latte</h3>
+                <div class="price">$3.61</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Spanish Latte', 3.61)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Spanish Latte', 3.61)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="latte.png" style="object-position: 50% 36%;" alt="Latte">
+            <div class="coffee-info">
+                <h3>Latte</h3>
+                <div class="price">$3.16</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Latte', 3.16)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Latte', 3.16)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="Cappuccino.png" style="object-position: 50% 36%;" alt="Cappuccino">
+            <div class="coffee-info">
+                <h3>Cappuccino</h3>
+                <div class="price">$3.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Cappuccino', 3.00)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Cappuccino', 3.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="espresso.png" style="object-position: 50% 36%;" alt="Espresso">
+            <div class="coffee-info">
+                <h3>Espresso</h3>
+                <div class="price">$1.11</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Espresso', 1.11)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Espresso', 1.11)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="doubleespresso.png" style="object-position: 50% 36%;" alt="Double Espresso">
+            <div class="coffee-info">
+                <h3>Double Espresso</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Double Espresso', 2.00)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Double Espresso', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="turkishcoffee.png" style="object-position: 50% 36%;" alt="Turkish Coffee">
+            <div class="coffee-info">
+                <h3>Turkish Coffee</h3>
+                <div class="price">$1.67</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Turkish Coffee', 1.67)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Turkish Coffee', 1.67)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="americancoffee.png" style="object-position: 50% 36%;" alt="American Coffee">
+            <div class="coffee-info">
+                <h3>American Coffee</h3>
+                <div class="price">$1.67</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('American Coffee', 1.67)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('American Coffee', 1.67)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="americanodouble.png" style="object-position: 50% 36%;" alt="Americano Double">
+            <div class="coffee-info">
+                <h3>Americano Double</h3>
+                <div class="price">$2.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Americano Double', 2.22)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Americano Double', 2.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="3in1.png" style="object-position: 50% 36%;" alt="3 in 1">
+            <div class="coffee-info">
+                <h3>3 in 1</h3>
+                <div class="price">$1.67</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('3 in 1', 1.67)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('3 in 1', 1.67)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="2in1.png" style="object-position: 50% 36%;" alt="2 in 1">
+            <div class="coffee-info">
+                <h3>2 in 1</h3>
+                <div class="price">$1.67</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('2 in 1', 1.67)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('2 in 1', 1.67)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="2in1gold.png" style="object-position: 50% 36%;" alt="2 in 1 Gold">
+            <div class="coffee-info">
+                <h3>2 in 1 Gold</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('2 in 1 Gold', 2.00)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('2 in 1 Gold', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="gold.png" style="object-position: 50% 36%;" alt="Gold">
+            <div class="coffee-info">
+                <h3>Gold</h3>
+                <div class="price">$1.67</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Gold', 1.67)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Gold', 1.67)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="hotchocolate.png" style="object-position: 50% 36%;" alt="Hot Chocolate">
+            <div class="coffee-info">
+                <h3>Hot Chocolate</h3>
+                <div class="price">$3.33</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="width:100%" onclick="openCoffeeCustomizer('Hot Chocolate', 3.33)">
+                        <i data-feather="plus"></i> Customize & Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Hot Chocolate', 3.33)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cold-coffee" class="section-title">Cold Coffee</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="frappucino.png"alt="Frappucino">
+            <div class="coffee-info">
+                <h3>Frappucino</h3>
+                <div class="price">$4.66</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Cappuccino', 3.25)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Cappuccino', 3.25)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="mochafrappe.png"alt="Mocha Frappe">
+            <div class="coffee-info">
+                <h3>Mocha Frappe</h3>
+                <div class="price">$4.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Mocha Frappe', 4.22)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Mocha Frappe', 4.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="hazelnutfrappe.png"alt="Hazelnut Frappe">
+            <div class="coffee-info">
+                <h3>Hazelnut Frappe</h3>
+                <div class="price">$4.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Hazelnut Frappe', 4.22)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Hazelnut Frappe', 4.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="caramelfrappe.png"alt="Caramel Frappe">
+            <div class="coffee-info">
+                <h3>Caramel Frappe</h3>
+                <div class="price">$4.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Caramel Frappe', 4.22)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Caramel Frappe', 4.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="icedlatte.png"alt="Iced Latte">
+            <div class="coffee-info">
+                <h3>Iced Latte</h3>
+                <div class="price">$4.27</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Iced Latte', 4.27)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Iced Latte', 4.27)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="americanocold.png"alt="Americano Cold">
+            <div class="coffee-info">
+                <h3>Americano Cold</h3>
+                <div class="price">$2.78</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Americano Cold', 2.78)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Americano Cold', 2.78)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="matcha.png"alt="Matcha">
+            <div class="coffee-info">
+                <h3>Matcha</h3>
+                <div class="price">$4.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Matcha', 4.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Matcha', 4.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tea" class="section-title">Tea</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="greenteemint.jpeg" alt="Green Tea Mint">
+            <div class="coffee-info">
+                <h3>Green Tea Mint</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Green Tea Mint', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Green Tea Mint', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="greenteen.png" alt="Green Tea Naturel">
+            <div class="coffee-info">
+                <h3>Green Tea Naturel</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Green Tea Naturel', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Green Tea Naturel', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="chamomile.png" alt="Chamomile Tea">
+            <div class="coffee-info">
+                <h3>Chamomile Tea</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Chamomile Tea', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Chamomile Tea', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="lemonginger.jpeg" alt="Lemon Ginger Tea">
+            <div class="coffee-info">
+                <h3>Lemon Ginger Tea</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Lemon Ginger Tea', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Lemon Ginger Tea', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="black.png" alt="Black Tea">
+            <div class="coffee-info">
+                <h3>Black Tea</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Black Tea', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Black Tea', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="ceylonearlgrey.jpeg" alt="Ceylon Earl Grey Tea">
+            <div class="coffee-info">
+                <h3>Ceylon Earl Grey Tea</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Ceylon Earl Grey Tea', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Ceylon Earl Grey Tea', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="box.png" alt="Box Of Tea">
+            <div class="coffee-info">
+                <h3>Box Of Tea</h3>
+                <div class="price">$15.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Box Of Tea', 15.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Box Of Tea', 15.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="smoothies" class="section-title">Smoothies & Milkshakes</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="strawbery.jpeg" alt="Strawberry Smoothie">
+            <div class="coffee-info">
+                <h3>Strawberry Smoothie</h3>
+                <div class="price">$3.61</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Strawberry Smoothie', 3.61)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Strawberry Smoothie', 3.61)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="mango.jpeg" alt="Mango Smoothie">
+            <div class="coffee-info">
+                <h3>Mango Smoothie</h3>
+                <div class="price">$3.61</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Mango Smoothie', 3.61)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Mango Smoothie', 3.61)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="forestfruit.jpeg" alt="Forest Fruit Smoothie">
+            <div class="coffee-info">
+                <h3>Forest Fruit Smoothie</h3>
+                <div class="price">$3.61</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Forest Fruit Smoothie', 3.61)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Forest Fruit Smoothie', 3.61)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="strawberry.jpeg" alt="Strawberry Shake">
+            <div class="coffee-info">
+                <h3>Strawberry Shake</h3>
+                <div class="price">$4.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Strawberry Shake', 4.22)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Strawberry Shake', 4.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="chocolatecream.jpeg" alt="Chocolate Cream Shake">
+            <div class="coffee-info">
+                <h3>Chocolate Cream Shake</h3>
+                <div class="price">$4.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Chocolate Cream Shake', 4.22)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Chocolate Cream Shake', 4.22)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="cookiescream.jpeg" alt="Cookies & Cream Shake">
+            <div class="coffee-info">
+                <h3>Cookies & Cream Shake</h3>
+                <div class="price">$4.72</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Cookies & Cream Shake', 4.72)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Cookies & Cream Shake', 4.72)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="peach.jpeg" alt="Iced Tea Peach">
+            <div class="coffee-info">
+                <h3>Iced Tea Peach</h3>
+                <div class="price">$2.78</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Iced Tea Peach', 2.78)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Iced Tea Peach', 2.78)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="framboise.jpeg" alt="Iced Tea Framboise">
+            <div class="coffee-info">
+                <h3>Iced Tea Framboise</h3>
+                <div class="price">$2.78</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Iced Tea Framboise', 2.78)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Iced Tea Framboise', 2.78)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="specialties" class="section-title">Specialties</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="mentafreddo.jpeg" alt="Menta Freddo Caffe">
+            <div class="coffee-info">
+                <h3>Menta Freddo Caffe</h3>
+                <div class="price">$3.88</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Menta Freddo Caffe', 3.88)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Menta Freddo Caffe', 3.88)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="cremafreddo.jpeg" alt="Crema Freddo Caffe">
+            <div class="coffee-info">
+                <h3>Crema Freddo Caffe</h3>
+                <div class="price">$3.89</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Crema Freddo Caffe', 3.89)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Crema Freddo Caffe', 3.89)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="sollievo.jpeg" alt="Sollievo By JJ">
+            <div class="coffee-info">
+                <h3>Sollievo By JJ</h3>
+                <div class="price">$7.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Sollievo By JJ', 7.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Sollievo By JJ', 7.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="vanilla.jpeg" alt="Vanilla Iced Coffee">
+            <div class="coffee-info">
+                <h3>Vanilla Iced Coffee</h3>
+                <div class="price">$7.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Vanilla Iced Coffee', 7.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Vanilla Iced Coffee', 7.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="freshapple.jpeg" alt="Fresh Apple Juice">
+            <div class="coffee-info">
+                <h3>Fresh Apple Juice</h3>
+                <div class="price">$2.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Fresh Apple Juice', 2.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Fresh Apple Juice', 2.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="cookies.jpeg" alt="Homemade Cookies">
+            <div class="coffee-info">
+                <h3>Homemade Cookies</h3>
+                <div class="price">$1.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Homemade Cookies', 1.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Homemade Cookies', 1.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="coffee-beans" class="section-title">Coffee Beans</div>
+    <div class="menu-grid">
+        <div class="coffee-card" data-price-per-g="0.02"> 
+            <img src="roastedcoffee.jpeg" alt="Roasted Coffee Beans">
+            <div class="coffee-info">
+                <h3>Roasted Coffee Beans</h3>
+                <div class="weight-control" style="margin-bottom: 10px;">
+                    <label style="font-size: 0.8rem; color: #888;">Weight (grams):</label>
+                    <input type="number" class="weight-input" value="200" min="50" step="50" style="width: 70px; padding: 5px; border-radius: 5px; border: 1px solid #ddd;" oninput="updateDynamicPrice(this)">
+                </div>
+                <div class="price">$4.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="handleCartAction(this, 'add')">
+                        <i data-feather="plus"></i> Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="handleCartAction(this, 'remove')">
+                        <i data-feather="minus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card" data-price-per-g="0.02"> 
+            <img src="roastedespresso.jpeg" alt="Roasted Espresso">
+            <div class="coffee-info">
+                <h3>Roasted Espresso</h3>
+                <div class="weight-control" style="margin-bottom: 10px;">
+                    <label style="font-size: 0.8rem; color: #888;">Weight (grams):</label>
+                    <input type="number" class="weight-input" value="200" min="50" step="50" style="width: 70px; padding: 5px; border-radius: 5px; border: 1px solid #ddd;" oninput="updateDynamicPrice(this)">
+                </div>
+                <div class="price">$4.50</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="handleCartAction(this, 'add')">
+                        <i data-feather="plus"></i> Add
+                    </button>
+                    <button class="minus-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="handleCartAction(this, 'remove')">
+                        <i data-feather="minus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card" data-price-per-g="0.02"> 
+            <img src="instantcoffeegold.png" alt="Instant Coffee Gold">
+            <div class="coffee-info">
+                <h3>Instant Coffee Gold</h3>
+                <div class="price">$7.33</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Homemade Cookies', 1.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Homemade Cookies', 1.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card" data-price-per-g="0.02"> 
+            <img src="instantcoffeered.png" alt="Instant Coffee Red">
+            <div class="coffee-info">
+                <h3>Instant Coffee Red</h3>
+                <div class="price">$6.22</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Homemade Cookies', 1.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Homemade Cookies', 1.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fresh" class="section-title">Fresh Items</div>
+    <div class="menu-grid">
+        <div class="coffee-card">
+            <img src="painaulait.jpeg" alt="Pain Au Lait">
+            <div class="coffee-info">
+                <h3>Pain Au Lait</h3>
+                <div class="price">$2.44</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain Au Lait', 2.44)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain Au Lait', 2.44)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="painaulaitauchocolat.jpeg" alt="Pain Au Lait Au Chocolat">
+            <div class="coffee-info">
+                <h3>Pain Au Lait Au Chocolat</h3>
+                <div class="price">$4.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain Au Lait Au Chocolat', 4.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain Au Lait Au Chocolat', 4.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="painaulaitauolive.jpeg" alt="Pain Au Lait Au Olive">
+            <div class="coffee-info">
+                <h3>Pain Au Lait Au Olive</h3>
+                <div class="price">$2.55</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain Au Lait Au Olive', 2.55)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain Au Lait Au Olive', 2.55)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="submarine.jpeg" alt="Submarine Au Lait">
+            <div class="coffee-info">
+                <h3>Submarine Au Lait</h3>
+                <div class="price">$4.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Submarine Au Lait', 4.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Submarine Au Lait', 4.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="burgerwhite.jpeg" alt="Burger White (6pcs)">
+            <div class="coffee-info">
+                <h3>Burger White (6pcs)</h3>
+                <div class="price">$3.61</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Burger White (6pcs)', 3.61)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Burger White (6pcs)', 3.61)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="burgerbrown.jpeg" alt="Burger Brown (6pcs)">
+            <div class="coffee-info">
+                <h3>Burger Brown (6pcs)</h3>
+                <div class="price">$3.89</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Burger Brown (6pcs)', 3.89)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Burger Brown (6pcs)', 3.89)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="paindemiewhite.jpeg" alt="Pain De Mie White">
+            <div class="coffee-info">
+                <h3>Pain De Mie White</h3>
+                <div class="price">$2.78</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain De Mie White', 2.78)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain De Mie White', 2.78)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="paindemiecereale.jpeg" alt="Pain De Mie Céréale">
+            <div class="coffee-info">
+                <h3>Pain De Mie Céréale</h3>
+                <div class="price">$3.33</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Pain De Mie Céréale', 3.33)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Pain De Mie Céréale', 3.33)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="sandwishsoftwh.jpeg" alt="Sandwish Soft White">
+            <div class="coffee-info">
+                <h3>Sandwish Soft White</h3>
+                <div class="price">$2.78</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Sandwish Soft White', 2.78)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Sandwish Soft White', 2.78)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coffee-card">
+            <img src="sandwishsoftbrw.jpeg" alt="Sandwish Soft Brown">
+            <div class="coffee-info">
+                <h3>Sandwish Soft Brown</h3>
+                <div class="price">$4.00</div>
+                <div class="btn-group">
+                    <button class="add-btn" style="flex:3" onclick="addToCart('Sandwish Soft Brown', 4.00)"><i data-feather="plus"></i> Add</button>
+                    <button class="add-btn" style="flex:1; border-color:#ff4444; color:#ff4444" onclick="removeFromCart('Sandwish Soft Brown', 4.00)"><i data-feather="minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartBar" class="cart-bar">
+        <div style="flex-grow: 1;">
+            <h4 id="cartCount">0 Items</h4>
+            <strong id="cartTotal">$0.00</strong>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <button class="clear-btn-main" onclick="clearCart()">Clear</button>
+            <button class="view-btn" onclick="toggleOverlay()">View Order</button>
+        </div>
+    </div>
+
+    <div id="orderOverlay" class="order-overlay">
+        <div class="overlay-header">
+            <h3>Your Order</h3>
+            <div>
+                <button onclick="clearCart()" style="background:none; border:1px solid #ff4444; color:#ff4444; padding:6px 12px; border-radius:8px; cursor:pointer; margin-right:10px;">Clear Order</button>
+                <button onclick="toggleOverlay()" style="background:none; border:none; color:white;"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div class="order-list">
+            <div id="orderList"></div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 15px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--primary); margin-bottom: 10px; text-transform: uppercase;">Pickup Schedule</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="date" id="pickupDate" style="flex: 1; background: #222; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px;">
+                    <input type="time" id="pickupTime" style="flex: 1; background: #222; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px;">
+                </div>
+            </div>
+            <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 15px; margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--primary); margin-bottom: 10px; text-transform: uppercase;">Notes</label>
+                <textarea id="specialNotes" placeholder="Extra sugar, etc..." style="width: 100%; background: #222; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; resize: none;" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <div style="display: flex; justify-content: space-between; padding: 15px 0; font-weight: 600; font-size: 1.2rem;">
+                <span>Total:</span>
+                <span id="overlayTotal">$0.00</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendOrder()">Confirm & Send Order</button>
+        </div>
+    </div>
+
+    <div id="thankYouPopup">
+        <div id="popupContent" style="background: #1a1a1a; padding: 40px; border-radius: 30px; border: 1px solid var(--primary); text-align: center;">
+            <div style="background: var(--primary); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: coffee-float 2s infinite ease-in-out;">
+                <i data-feather="coffee" style="color: black; width: 40px; height: 40px;"></i>
+            </div>
+            <h2 style="margin: 0;">Order Sent!</h2>
+            <p style="color: #888; margin: 10px 0 25px;">We're preparing your order.</p>
+            <button onclick="closeThankYou()" style="background: var(--primary); color: black; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 600; cursor: pointer;">Close</button>
+        </div>
+    </div>
+
+    <div id="modifierOverlay" class="order-overlay" style="height: 60vh; border-top-color: #c69c6d;">
+        <div class="overlay-header">
+            <h3 id="modifierTitle">Customize Baguette</h3>
+            <button onclick="closeModifier()" style="background:none; border:none; color:white;"><i data-feather="x"></i></button>
+        </div>
+        <div class="order-list">
+            <p style="font-size: 0.8rem; color: #888;">Would you like to add anything?</p>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Knefet</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$3.74</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Knefet" data-price="3.74" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Kashkawan + Dinde</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$3.76</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Kashkawan + Dinde" data-price="3.76" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Labneh</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$2.26</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Labneh" data-price="2.26" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Bulgari</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$2.76</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Bulgari" data-price="2.76" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Dinde</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$2.76</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Dinde" data-price="2.76" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Kashkawan</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$3.24</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Kashkawan" data-price="3.24" style="width: 25px; height: 25px;">
+            </div>
+            <div class="order-item-row">
+                <div>
+                    <div style="font-weight:600">Pizza</div>
+                    <div style="color:var(--primary); font-size:0.8rem">+$4.33</div>
+                </div>
+                <input type="checkbox" class="baguette-addon" data-name="Pizza" data-price="4.33" style="width: 25px; height: 25px;">
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <button class="whatsapp-btn" style="background: var(--primary); color: black;" onclick="confirmBaguette()">Add to Order</button>
+        </div>
+    </div>
+
+    <div id="modifierOverlayCoffee" class="order-overlay" style="height: 60vh; border-top-color: var(--primary);">
+    <div class="overlay-header">
+        <h3 id="coffeeModifierTitle">Customize Coffee</h3>
+        <button onclick="closeCoffeeModifier()" style="background:none; border:none; color:white;"><i data-feather="x"></i></button>
+    </div>
+    <div class="order-list">
+        <p style="font-size: 0.8rem; color: #888;">Select your preferences:</p>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Change To Almond Milk</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.75</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Change To Almond Milk" data-price="0.75" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Change To Free Lactose Milk</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.75</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Change To Free Lactose Milk" data-price="0.75" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Add Milk</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.56</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Add Milk" data-price="0.56" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Add Espresso</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.67</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Add Espresso" data-price="0.67" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Add Squeeze Of Vanilla</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.44</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Add Squeeze Of Vanilla" data-price="0.44" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Add Squeeze Of Caramel</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.44</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Add Squeeze Of Caramel" data-price="0.44" style="width: 25px; height: 25px;">
+        </div>
+
+        <div class="order-item-row">
+            <div>
+                <div style="font-weight:600">Add Squeeze Of Hazelnut</div>
+                <div style="color:var(--primary); font-size:0.8rem">+$0.44</div>
+            </div>
+            <input type="checkbox" class="coffee-addon" data-name="Add Squeeze Of Hazelnut" data-price="0.44" style="width: 25px; height: 25px;">
+        </div>       
+    </div>
+    <div class="overlay-footer">
+        <button class="whatsapp-btn" style="background: var(--primary); color: black;" onclick="confirmCoffee()">Add to Order</button>
+    </div>
+</div>
+
+    <nav class="nav">
+        <a href="J&JPetroStation.html"><i data-feather="home"></i>Home</a>
+        <a href="J&JCoffeeShop.html" class="active"><i data-feather="coffee"></i>Coffee</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=J%26J+Petro+Station" target="_blank"><i data-feather="map-pin"></i>Map</a>
+        <a href="contactus.html"><i data-feather="message-circle"></i>Contact</a>
+    </nav>
+
+    <script>
+        feather.replace();
+        let cart = {};
+        let total = 0;
+
+        function addToCart(name, price) {
+            if (cart[name]) { cart[name].qty += 1; } 
+            else { cart[name] = { price: price, qty: 1 }; }
+            total += price;
+            updateCartUI();
+        }
+
+        function removeFromCart(name, price) {
+            if (cart[name] && cart[name].qty > 0) {
+                cart[name].qty -= 1;
+                total -= price;
+                if (cart[name].qty === 0) { delete cart[name]; }
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const bar = document.getElementById('cartBar');
+            let itemCount = 0;
+            for (let item in cart) { itemCount += cart[item].qty; }
+
+            if (itemCount > 0) {
+                bar.classList.add('active');
+                document.getElementById('cartCount').innerText = itemCount + " Items";
+                document.getElementById('cartTotal').innerText = "$" + Math.max(0, total).toFixed(2);
+            } else {
+                bar.classList.remove('active');
+                document.getElementById('orderOverlay').classList.remove('open');
+            }
+            renderOrderList();
+        }
+
+        function renderOrderList() {
+            const listContainer = document.getElementById('orderList');
+            listContainer.innerHTML = '';
+            for (let name in cart) {
+                const item = cart[name];
+                const row = document.createElement('div');
+                row.className = 'order-item-row';
+                row.innerHTML = `
+                    <div>
+                        <div style="font-weight:600">${name}</div>
+                        <div style="color:var(--primary); font-size:0.8rem">$${(item.qty * item.price).toFixed(2)}</div>
+                    </div>
+                    <div class="item-controls">
+                        <button class="qty-btn" onclick="removeFromCart('${name}', ${item.price})">-</button>
+                        <span>${item.qty}</span>
+                        <button class="qty-btn" onclick="addToCart('${name}', ${item.price})">+</button>
+                    </div>`;
+                listContainer.appendChild(row);
+            }
+            document.getElementById('overlayTotal').innerText = "$" + Math.max(0, total).toFixed(2);
+        }
+
+        function toggleOverlay() {
+            document.getElementById('orderOverlay').classList.toggle('open');
+        }
+
+        function clearCart() {
+            if (confirm("Clear your order?")) {
+                cart = {}; total = 0;
+                updateCartUI();
+            }
+        }
+
+window.onload = function() {
+    const dateInput = document.getElementById('pickupDate');
+    const now = new Date();
+    
+    // Format today's date as YYYY-MM-DD
+    const today = now.toISOString().split('T')[0];
+    dateInput.min = today;
+    dateInput.value = today; // Default to today
+};
+
+        function sendOrder() {
+    const dateValue = document.getElementById('pickupDate').value;
+    const timeValue = document.getElementById('pickupTime').value;
+    const notes = document.getElementById('specialNotes').value;
+    
+    if(!dateValue || !timeValue) { 
+        alert("Please set pickup time"); 
+        return; 
+    }
+
+    // Time Validation
+    const selectedDateTime = new Date(`${dateValue}T${timeValue}`);
+    const now = new Date();
+
+    if (selectedDateTime < now) {
+        alert("Wait a minute! You can't pick a time in the past. Please choose a future time.");
+        return;
+    }
+
+    // Build the WhatsApp Message
+    let message = "☕ *New Order - J&J Coffee*\n\n";
+    
+    for (let name in cart) { 
+        message += `• ${cart[name].qty}x ${name} ($${(cart[name].qty * cart[name].price).toFixed(2)})\n`; 
+    }
+    
+    if(notes) {
+        message += `\n📝 *Notes:* ${notes}\n`;
+    }
+
+    message += `\n💰 *Total: $${total.toFixed(2)}*`;
+    message += `\n🕒 *Pickup: ${dateValue} at ${timeValue}*`;
+    
+    // Send to WhatsApp
+    const whatsappUrl = "https://wa.me/96103358831?text=" + encodeURIComponent(message);
+    window.open(whatsappUrl, "_blank");
+    
+    // Show Success UI
+    document.getElementById('orderOverlay').classList.remove('open');
+    document.getElementById('thankYouPopup').classList.add('show');
+    feather.replace();
+}
+
+        function showThankYou() {
+            document.getElementById('thankYouPopup').classList.add('show');
+            feather.replace();
+        }
+
+        function closeThankYou() {
+            document.getElementById('thankYouPopup').classList.remove('show');
+            cart = {}; total = 0; updateCartUI();
+        }
+        let currentBaguette = null;
+
+    function openBaguetteCustomizer(name, price) {
+        currentBaguette = { name: name, price: price };
+        document.getElementById('modifierTitle').innerText = "Customize " + name;
+        document.getElementById('modifierOverlay').classList.add('open');
+        // Uncheck previous selections
+        document.getElementById('addon').checked = false;
+    }
+
+    function closeModifier() {
+        document.getElementById('modifierOverlay').classList.remove('open');
+    }
+
+function confirmBaguette() {
+    let finalName = currentBaguette.name;
+    let finalPrice = currentBaguette.price;
+    let selectedAddons = [];
+
+    // Find all checkboxes that are checked
+    const checkboxes = document.querySelectorAll('.baguette-addon:checked');
+
+    checkboxes.forEach(addon => {
+        // Pull the name and price from the data attributes we set in HTML
+        const addonName = addon.getAttribute('data-name');
+        const addonPrice = parseFloat(addon.getAttribute('data-price'));
+
+        selectedAddons.push(addonName);
+        finalPrice += addonPrice;
+    });
+
+    // If they picked toppings, add them to the name (e.g. "Baguette + Knefet, Cheese")
+    if (selectedAddons.length > 0) {
+        finalName += " (+ " + selectedAddons.join(", ") + ")";
+    }
+
+    // Add the final customized version to the cart
+    addToCart(finalName, finalPrice);
+    
+    // Reset checkboxes for next time
+    document.querySelectorAll('.baguette-addon').forEach(cb => cb.checked = false);
+    
+    closeModifier();
+}
+let currentCoffee = null;
+
+function openCoffeeCustomizer(name, price) {
+    currentCoffee = { name: name, price: price };
+    document.getElementById('coffeeModifierTitle').innerText = "Customize " + name;
+    document.getElementById('modifierOverlayCoffee').classList.add('open');
+    // Clear previous checks
+    document.querySelectorAll('.coffee-addon').forEach(cb => cb.checked = false);
+}
+
+function closeCoffeeModifier() {
+    document.getElementById('modifierOverlayCoffee').classList.remove('open');
+}
+
+function confirmCoffee() {
+    let finalName = currentCoffee.name;
+    let finalPrice = currentCoffee.price;
+    let selectedAddons = [];
+
+    const checkboxes = document.querySelectorAll('.coffee-addon:checked');
+    checkboxes.forEach(addon => {
+        const addonName = addon.getAttribute('data-name');
+        const addonPrice = parseFloat(addon.getAttribute('data-price'));
+        selectedAddons.push(addonName);
+        finalPrice += addonPrice;
+    });
+
+    if (selectedAddons.length > 0) {
+        finalName += " (" + selectedAddons.join(", ") + ")";
+    }
+
+    addToCart(finalName, finalPrice);
+    closeCoffeeModifier();
+}
+
+function updateDynamicPrice(inputElement) {
+    const card = inputElement.closest('.coffee-card');
+    const priceDisplay = card.querySelector('.price');
+    const pricePerGram = parseFloat(card.dataset.pricePerG);
+    const weight = parseInt(inputElement.value) || 0;
+
+    // Calculate price (Weight * Price per Gram)
+    const newPrice = (weight * pricePerGram).toFixed(2);
+    priceDisplay.innerText = `$${newPrice}`;
+}
+
+function handleCartAction(buttonElement, action) {
+    const card = buttonElement.closest('.coffee-card');
+    const productName = card.querySelector('h3').innerText;
+    const weightInput = card.querySelector('.weight-input');
+    const weight = weightInput.value;
+    const price = parseFloat(card.querySelector('.price').innerText.replace('$', ''));
+
+    // Formats the name as "Roasted Coffee Beans (250g)"
+    const fullName = `${productName} (${weight}g)`;
+
+    if (action === 'add') {
+        if(weight <= 0) return alert("Please enter a valid weight");
+        addToCart(fullName, price);
+    } else {
+        removeFromCart(fullName, price);
+    }
+}
+    </script>
+</body>
+</html>
